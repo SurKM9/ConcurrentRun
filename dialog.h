@@ -2,6 +2,7 @@
 #define DIALOG_H
 
 #include <QDialog>
+#include "worker.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -17,17 +18,20 @@ class Dialog : public QDialog
     public:
         Dialog(QWidget* parent = nullptr);
         ~Dialog();
-        void asyncFunction();
+
+    public slots:
+
+        void onStartClicked();
+        void onStopClicked();
+        void onUpdateGUI(int value);
 
     signals:
 
-        void updateGUI(int value);
+        void stop();
 
-    private slots:
-        void on_pushButton_clicked();
-
-        void onUpdateGUI(int value);
     private:
         Ui::Dialog* ui;
+        bool m_stop;
+        Worker* m_worker;
 };
 #endif // DIALOG_H

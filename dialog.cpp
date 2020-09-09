@@ -7,24 +7,37 @@
 Dialog::Dialog(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::Dialog)
+    , m_stop(false)
 {
     ui->setupUi(this);
 
-    connect(this, &Dialog::updateGUI, this, &Dialog::onUpdateGUI);
+    m_worker = new Worker(this);
+
+    connect(m_worker, &Worker::updateGUI, this, &Dialog::onUpdateGUI);
+    connect(this, &Dialog::stop, m_worker, &Worker::stop);
+    connect(ui->pushButton, &QPushButton::clicked, this, &Dialog::onStartClicked);
+    connect(ui->pushButton_2, &QPushButton::clicked, this, &Dialog::onStopClicked);
 }
 
 
 
 Dialog::~Dialog()
 {
+    emit stop();
     delete ui;
 }
 
 
-void Dialog::on_pushButton_clicked()
+void Dialog::onStartClicked()
 {
     // create an concurrent
-    QFuture<void> future = QtConcurrent::run(this, &Dialog::asyncFunction);
+    QFuture<void> future = QtConcurrent::run(m_worker, &Worker::asyncFunction);
+}
+
+
+void Dialog::onStopClicked()
+{
+    emit stop();
 }
 
 
@@ -37,11 +50,4 @@ void Dialog::onUpdateGUI(int value)
 
 
 
-void Dialog::asyncFunction()
-{
-    for(int i = 0; i <= 100; i++)
-    {
-        emit updateGUI(i);
-        this->thread()->msleep(100);
-    }
-}
+
