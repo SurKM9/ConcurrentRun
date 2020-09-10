@@ -7,7 +7,6 @@
 Dialog::Dialog(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui::Dialog)
-    , m_stop(false)
 {
     ui->setupUi(this);
 
@@ -32,12 +31,15 @@ void Dialog::onStartClicked()
 {
     // create an concurrent
     QFuture<void> future = QtConcurrent::run(m_worker, &Worker::asyncFunction);
+
+    ui->pushButton->setEnabled(false);
 }
 
 
 void Dialog::onStopClicked()
 {
     emit stop();
+    ui->pushButton->setEnabled(true);
 }
 
 

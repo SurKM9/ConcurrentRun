@@ -31,7 +31,6 @@ class Dialog : public QDialog
 
     private:
         Ui::Dialog* ui;
-        bool m_stop;
         Worker* m_worker;
 };
 #endif // DIALOG_H
