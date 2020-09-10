@@ -1,4 +1,5 @@
 #include <QThread>
+#include <QDebug>
 #include "worker.h"
 
 
@@ -20,6 +21,7 @@ void Worker::stop()
 
 void Worker::asyncFunction()
 {
+    qDebug() << this->thread()->currentThreadId();
     m_stop = false;
 
     for(int i = 0; i <= 100; i++)

@@ -29,6 +29,8 @@ Dialog::~Dialog()
 
 void Dialog::onStartClicked()
 {
+    qDebug() << this->thread()->currentThreadId();
+
     // create an concurrent
     QFuture<void> future = QtConcurrent::run(m_worker, &Worker::asyncFunction);
 
@@ -49,7 +51,3 @@ void Dialog::onUpdateGUI(int value)
     ui->lcdNumber->display(value);
     ui->progressBar->setValue(value);
 }
-
-
-
-
