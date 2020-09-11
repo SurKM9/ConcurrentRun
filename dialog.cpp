@@ -29,7 +29,7 @@ Dialog::~Dialog()
 
 void Dialog::onStartClicked()
 {
-    qDebug() << this->thread()->currentThreadId();
+    qDebug() << "Main thread: " << this->thread()->currentThreadId();
 
     // create an concurrent
     QFuture<void> future = QtConcurrent::run(m_worker, &Worker::asyncFunction);
